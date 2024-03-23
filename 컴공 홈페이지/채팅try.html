@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학년별 채팅</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        #comment-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #comment-list {
+            padding: 20px;
+            overflow-y: scroll;
+            max-height: 300px;
+        }
+
+        .comment {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .comment-time {
+            font-size: 0.8em;
+            color: #888;
+        }
+
+        .comment-text {
+            margin-top: 5px;
+        }
+
+        #comment-input {
+            display: flex;
+            flex-direction: column;
+            background-color: #f9f9f9;
+            padding: 10px;
+        }
+
+        #comment-text {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+
+        #grade-selector {
+            padding: 5px;
+        }
+
+        #submit-button {
+            padding: 5px 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">Chat app</h1>
+    <div id="comment-container">
+        <div id="comment-list">
+            <!-- Comments will be displayed here -->
+        </div>
+        <div id="comment-input">
+            <textarea id="comment-text" placeholder="Type your comment..."></textarea>
+            <select id="grade-selector">
+                <option value="1">1st Grade</option>
+                <option value="2">2nd Grade</option>
+                <option value="3">3rd Grade</option>
+                <option value="4">4th Grade</option>
+            </select>
+            <button id="submit-button" onclick="addComment()">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        function addComment() {
+            var commentText = document.getElementById('comment-text').value;
+            var selectedGrade = document.getElementById('grade-selector').value;
+
+            if (commentText.trim() !== '') {
+                var commentList = document.getElementById('comment-list');
+                var newComment = document.createElement('div');
+                newComment.className = 'comment';
+
+                // Comment header (grade and time)
+                var commentHeader = document.createElement('div');
+                commentHeader.className = 'comment-header';
+
+                // Add comment grade
+                var commentGrade = document.createElement('div');
+                commentGrade.textContent = 'Grade: ' + selectedGrade;
+                commentHeader.appendChild(commentGrade);
+
+                // Add comment time
+                var commentTime = document.createElement('div');
+                commentTime.className = 'comment-time';
+                commentTime.textContent = getCurrentDateTime();
+                commentHeader.appendChild(commentTime);
+
+                newComment.appendChild(commentHeader);
+
+                // Add comment text
+                var commentTextElement = document.createElement('div');
+                commentTextElement.className = 'comment-text';
+                commentTextElement.textContent = commentText;
+                newComment.appendChild(commentTextElement);
+
+                commentList.appendChild(newComment);
+
+                // Clear the input field after submitting the comment
+                document.getElementById('comment-text').value = '';
+
+                // Scroll to the bottom to show the latest comment
+                commentList.scrollTop = commentList.scrollHeight;
+            }
+        }
+
+        function getCurrentDateTime() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = now.getMonth() + 1;
+            var day = now.getDate();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 0시일 경우 12시로 표시
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            var dateTimeString = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ' ' + ampm;
+            return dateTimeString;
+        }
+    </script>
+</body>
+</html>
